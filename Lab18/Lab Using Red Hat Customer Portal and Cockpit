@@ -1,0 +1,77 @@
+
+## **Task 1: Accessing Red Hat Customer Portal**
+
+### **Subtask 1.1: Log in to Red Hat Customer Portal**
+1. Open a web browser and navigate to:  
+   https://access.redhat.com
+2. Click **Log in** and enter your Red Hat account credentials
+3. Verify successful login by checking for your username in the top-right corner
+
+**Expected Outcome**: You should see the Red Hat Customer Portal dashboard.
+
+### **Subtask 1.2: Access Knowledgebase Articles**
+1. In the search bar, type:  
+   `RHEL 9 system logging`
+2. Review the search results and open any relevant articles
+3. Note the documentation structure and available resources
+
+**Troubleshooting Tip**: If you can't find articles, ensure your account has proper subscriptions attached.
+
+---
+
+## **Task 2: Opening Support Cases**
+
+### **Subtask 2.1: Create a Support Case**
+1. From the portal header, select **Support** → **Open a Case**
+2. Fill in the case details:
+   - Product: Red Hat Enterprise Linux
+   - Version: Select your RHEL version
+   - Problem type: Technical
+3. Describe a sample issue (e.g., "Cockpit service not starting")
+4. Click **Submit**
+
+**Expected Outcome**: You should receive a case number and confirmation email.
+
+---
+
+## **Task 3: Installing and Configuring Cockpit**
+
+### **Subtask 3.1: Install Cockpit Packages**
+1. On your RHEL system, run:
+   ```bash
+   sudo dnf install cockpit cockpit-podman -y
+Enable and start the service:
+
+sudo systemctl enable --now cockpit.socket
+Verify the service status:
+
+sudo systemctl status cockpit.socket
+Expected Outcome: Cockpit should be installed and running on port 9090.
+
+Subtask 3.2: Configure Firewall
+Allow Cockpit through the firewall:
+sudo firewall-cmd --add-service=cockpit --permanent
+sudo firewall-cmd --reload
+Troubleshooting Tip: If you can't access the web interface, verify port 9090 is open with:
+
+sudo ss -tulnp | grep 9090
+Task 4: Exploring Cockpit Dashboard
+Subtask 4.1: Access Cockpit Web Interface
+Open a browser and navigate to:
+https://<your-server-ip>:9090
+Log in using your system credentials
+Subtask 4.2: Navigate Dashboard Features
+Explore these sections:
+System Overview: View CPU, memory, and disk usage
+Logs: Check system journal entries
+Networking: Review network interfaces
+Podman Containers: Manage containers (if cockpit-podman was installed)
+Key Concept: Cockpit provides a web-based unified interface for system administration.
+
+Subtask 4.3: View System Logs
+Click Logs in the left sidebar
+Filter logs by:
+Priority (Error, Warning)
+Time range
+Service name (e.g., cockpit)
+Expected Outcome: You should see filtered system log entries in the web interface.
