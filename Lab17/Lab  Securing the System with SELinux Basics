@@ -1,0 +1,87 @@
+Task 1: Viewing SELinux Contexts with ls -Z
+Subtask 1.1: View file contexts
+Create a test file:
+
+touch /tmp/testfile.txt
+View its SELinux context:
+
+ls -Z /tmp/testfile.txt
+Expected output:
+
+unconfined_u:object_r:user_tmp_t:s0 /tmp/testfile.txt
+View directory context:
+
+ls -Zd /tmp
+Subtask 1.2: Understand context components
+The context has four colon-separated parts:
+
+User: unconfined_u
+Role: object_r
+Type: user_tmp_t
+Level: s0
+Key Concept: The type is most important for access control decisions.
+
+Task 2: Changing Contexts with chcon
+Subtask 2.1: Change file context temporarily
+Create a web directory:
+
+sudo mkdir /web
+View its default context:
+
+ls -Zd /web
+Change to httpd context:
+
+sudo chcon -t httpd_sys_content_t /web
+Verify the change:
+
+ls -Zd /web
+Expected type should now be httpd_sys_content_t
+
+Subtask 2.2: Restore default context
+Restore default contexts:
+
+sudo restorecon -v /web
+Verify restoration:
+
+ls -Zd /web
+Task 3: Interpreting Audit Logs and AVC Denials
+Subtask 3.1: Generate an AVC denial
+Create a test scenario:
+
+sudo mkdir -p /web/html
+sudo touch /web/html/index.html
+sudo chcon -t user_home_t /web/html/index.html
+sudo systemctl start httpd
+Try accessing the file through web server (will trigger denial):
+
+curl http://localhost/html/index.html
+Subtask 3.2: Analyze the denial
+Check SELinux denials:
+
+sudo ausearch -m avc -ts recent
+For more readable output:
+
+sudo sealert -a /var/log/audit/audit.log
+Look for:
+
+Source context (process trying to access)
+Target context (object being accessed)
+Denied permission
+Subtask 3.3: Resolve the denial
+Apply correct context:
+
+sudo chcon -t httpd_sys_content_t /web/html/index.html
+Verify access works now:
+
+curl http://localhost/html/index.html
+Troubleshooting Tips
+If sealert isn't working, ensure the setroubleshoot service is running:
+
+sudo systemctl start setroubleshoot
+For persistent context changes, use semanage fcontext instead of chcon:
+
+sudo semanage fcontext -a -t httpd_sys_content_t "/web(/.*)?"
+sudo restorecon -Rv /web
+To temporarily put SELinux in permissive mode for troubleshooting:
+
+sudo setenforce 0
