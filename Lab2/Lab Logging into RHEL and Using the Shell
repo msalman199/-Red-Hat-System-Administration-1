@@ -1,0 +1,103 @@
+Task 1: Local Console Login
+Objective: Access the RHEL system directly from the console.
+
+Power on your RHEL system
+
+If using a virtual machine, start it from your hypervisor.
+If using physical hardware, power on the machine.
+Wait for the login prompt
+
+The system will display a login screen with a prompt like:
+Red Hat Enterprise Linux 9.0 (Plow)
+Kernel 5.14.0-70.el9.x86_64 on an x86_64
+
+localhost login: _
+Enter your username and password
+
+Type your username and press Enter.
+When prompted, enter your password (no characters will be displayed as you type).
+Verify successful login
+
+After authentication, you should see a command prompt similar to:
+[user@localhost ~]$
+Troubleshooting Tip:
+
+If login fails, verify caps lock is off and retype credentials carefully.
+If you receive "Login incorrect", contact your system administrator to reset the password.
+Task 2: Remote SSH Login
+Objective: Access the RHEL system from another machine using SSH.
+
+Verify SSH service is running on RHEL
+On your RHEL system, run:
+
+sudo systemctl status sshd
+Expected output should show active (running).
+Find your RHEL system's IP address
+Run on RHEL:
+
+ip a
+Look for your active network interface (usually ens192 or eth0) and note the inet address.
+Connect from a remote system
+From your client machine (Linux/macOS/Windows with WSL), run:
+
+ssh username@rhel-system-ip
+Example:
+
+ssh user@192.168.1.100
+Authenticate and verify
+
+Accept the host fingerprint if prompted (type yes).
+Enter your password when requested.
+You should now see the remote system's shell prompt.
+Troubleshooting Tip:
+
+If connection fails, check:
+ping rhel-system-ip
+If ping fails, verify network connectivity and firewall settings (sudo firewall-cmd --list-all).
+Task 3: Basic Shell Commands
+Objective: Learn fundamental shell navigation and help commands.
+
+Subtask 3.1: Print Working Directory
+pwd
+Expected Output:
+/home/username (or your current directory path)
+Subtask 3.2: List Directory Contents
+ls
+Common options:
+ls -l   # Long listing
+ls -a   # Include hidden files
+ls -lh  # Human-readable sizes
+Subtask 3.3: Access Manual Pages
+man ls
+Navigate with arrow keys, press q to quit.
+Search within man pages with /searchterm
+Subtask 3.4: Exit the Shell
+exit
+For remote sessions, this will close the SSH connection.
+For local sessions, this will log you out.
+Task 4: Customize Shell Prompt (PS1)
+Objective: Personalize your command prompt.
+
+View current PS1 variable
+
+echo $PS1
+Typical default: [\u@\h \W]\$
+Temporarily change prompt
+
+PS1="[\u@\h \W \t]\$ "
+This adds the current time to your prompt.
+Make changes permanent
+Edit ~/.bashrc:
+
+nano ~/.bashrc
+Add at the end:
+
+export PS1="[\u@\h \W \t]\$ "
+Save (Ctrl+O), exit (Ctrl+X), then reload:
+source ~/.bashrc
+Common PS1 Symbols:
+
+\u: Username
+\h: Hostname
+\W: Current directory
+\t: Time
