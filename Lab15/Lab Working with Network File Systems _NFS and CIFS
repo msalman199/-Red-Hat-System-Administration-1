@@ -1,0 +1,92 @@
+Task 1: Install Required Packages
+Subtask 1.1: Install nfs-utils and cifs-utils
+These packages provide the tools needed to work with NFS and CIFS shares.
+
+# Update package repositories
+sudo dnf update -y
+
+# Install NFS and CIFS utilities
+sudo dnf install -y nfs-utils cifs-utils
+Verification:
+
+# Verify installations
+rpm -q nfs-utils cifs-utils
+Expected Output:
+
+nfs-utils-2.x.x
+cifs-utils-6.x.x
+Troubleshooting Tip:
+
+If using Ubuntu/Debian, replace dnf with apt and package names may vary slightly.
+Task 2: Mount NFS Shares
+Subtask 2.1: Discover Available NFS Shares
+First, check what shares are available from the NFS server.
+
+# Discover NFS shares (replace SERVER_IP with actual NFS server IP)
+showmount -e SERVER_IP
+Expected Output:
+
+Export list for SERVER_IP:
+/share  *
+Subtask 2.2: Create a Mount Point and Mount NFS Share
+# Create a local directory for mounting
+sudo mkdir -p /mnt/nfs_share
+
+# Mount the NFS share (replace SERVER_IP and /share with actual values)
+sudo mount -t nfs SERVER_IP:/share /mnt/nfs_share
+Verification:
+
+# Check mounted filesystems
+df -hT | grep nfs
+
+# List contents of the mounted share
+ls /mnt/nfs_share
+Troubleshooting Tip:
+
+If mount fails, ensure NFS services are running on the server: systemctl status nfs-server.
+Task 3: Mount CIFS/SMB Shares
+Subtask 3.1: Create Credentials File (Optional but Recommended)
+Store CIFS credentials securely.
+
+# Create a credentials file (replace USERNAME and PASSWORD)
+echo "username=USERNAME" | sudo tee /etc/cifs_credentials > /dev/null
+echo "password=PASSWORD" | sudo tee -a /etc/cifs_credentials > /dev/null
+
+# Set restrictive permissions
+sudo chmod 600 /etc/cifs_credentials
+Subtask 3.2: Mount CIFS Share
+# Create mount point
+sudo mkdir -p /mnt/cifs_share
+
+# Mount CIFS share (replace SERVER_IP and SHARENAME)
+sudo mount -t cifs -o credentials=/etc/cifs_credentials //SERVER_IP/SHARENAME /mnt/cifs_share
+Verification:
+
+# Check mounted filesystems
+df -hT | grep cifs
+
+# List contents
+ls /mnt/cifs_share
+Troubleshooting Tip:
+
+If mount fails, install samba-client for additional tools: sudo dnf install samba-client.
+Task 4: Configure Persistent Mounts in /etc/fstab
+Subtask 4.1: Add NFS Share to /etc/fstab
+# Backup fstab
+sudo cp /etc/fstab /etc/fstab.bak
+
+# Add NFS entry (replace SERVER_IP and /share)
+echo "SERVER_IP:/share  /mnt/nfs_share  nfs  defaults  0 0" | sudo tee -a /etc/fstab
+Subtask 4.2: Add CIFS Share to /etc/fstab
+# Add CIFS entry (replace SERVER_IP and SHARENAME)
+echo "//SERVER_IP/SHARENAME  /mnt/cifs_share  cifs  credentials=/etc/cifs_credentials,uid=1000,gid=1000  0 0" | sudo tee -a /etc/fstab
+Verification:
+
+# Test fstab entries (mount all)
+sudo mount -a
+
+# Verify mounts persist after reboot (optional: reboot to test)
+df -hT | grep -E 'nfs|cifs'
+Troubleshooting Tip:
+
+If mounts fail at boot, add _netdev option to fstab for network filesystems.
