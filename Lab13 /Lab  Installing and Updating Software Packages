@@ -1,0 +1,82 @@
+Task 1: Registering a System Subscription
+Objective: Register your system with Red Hat Subscription Manager (RHSM) to access official repositories.
+
+Step 1: Check Subscription Status
+Run the following command to verify if the system is already registered:
+
+sudo subscription-manager status
+Expected Output:
+
+If registered, it shows subscription details.
+If not, it indicates "This system is not yet registered."
+Step 2: Register the System
+(For RHEL only, skip if using Fedora/CentOS Stream)
+
+sudo subscription-manager register --username=<your_username> --password=<your_password> --auto-attach
+Expected Outcome:
+
+System successfully registers and attaches available subscriptions.
+Troubleshooting Tip:
+
+If registration fails, ensure network connectivity and correct credentials.
+Task 2: Enabling and Disabling Repositories
+Objective: Manage software repositories to control package sources.
+
+Step 1: List Available Repositories
+sudo dnf repolist all
+Expected Output:
+
+A list of enabled and disabled repositories.
+Step 2: Enable a Repository
+sudo dnf config-manager --enable <repo_name>
+Example (for EPEL on CentOS/Fedora):
+
+sudo dnf install epel-release -y
+sudo dnf config-manager --enable epel
+Step 3: Disable a Repository
+sudo dnf config-manager --disable <repo_name>
+Expected Outcome:
+
+The repository status changes in dnf repolist.
+Task 3: Installing, Removing, and Updating Packages
+Objective: Manage individual packages using dnf.
+
+Step 1: Install a Package
+sudo dnf install -y httpd
+Expected Outcome:
+
+The httpd package is installed.
+Step 2: Remove a Package
+sudo dnf remove -y httpd
+Expected Outcome:
+
+The httpd package is uninstalled.
+Step 3: Update Packages
+sudo dnf update -y
+Expected Outcome:
+
+All installed packages are updated to the latest versions.
+Task 4: Working with Package Groups and Modules
+Objective: Install and manage package groups and modules.
+
+Step 1: List Available Package Groups
+sudo dnf group list
+Expected Output:
+
+A list of available package groups (e.g., "Development Tools").
+Step 2: Install a Package Group
+sudo dnf group install -y "Development Tools"
+Expected Outcome:
+
+All packages in the group are installed.
+Step 3: List Available Modules
+sudo dnf module list
+Expected Output:
+
+A list of available modules (e.g., nodejs).
+Step 4: Enable and Install a Module
+sudo dnf module enable -y nodejs:18
+sudo dnf install -y nodejs
+Expected Outcome:
+
+The nodejs:18 module is enabled and installed.
