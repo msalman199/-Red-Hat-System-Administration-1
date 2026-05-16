@@ -1,0 +1,88 @@
+Task 1: Inspecting Block Devices
+Subtask 1.1: List Block Devices with lsblk
+Open a terminal and run:
+
+lsblk
+Output: Shows all block devices in a tree format with names, sizes, and mount points.
+For more details, use:
+
+lsblk -f
+Output: Displays filesystem types and UUIDs.
+Subtask 1.2: Examine Partitions with fdisk
+List available disks:
+
+sudo fdisk -l
+Output: Shows partition tables for all disks.
+Inspect a specific disk (replace /dev/sdX with your disk):
+
+sudo fdisk -l /dev/sdX
+Subtask 1.3: Identify Filesystems with blkid
+Run:
+sudo blkid
+Output: Lists all block devices with UUIDs and filesystem types.
+Task 2: Mounting and Unmounting Filesystems
+Subtask 2.1: Mount a Filesystem Temporarily
+Create a mount point:
+
+sudo mkdir /mnt/mydisk
+Mount a partition (replace /dev/sdX1 with your partition):
+
+sudo mount /dev/sdX1 /mnt/mydisk
+Verify the mount:
+
+df -h /mnt/mydisk
+Expected Outcome: The partition should appear in the output.
+Subtask 2.2: Unmount a Filesystem
+Unmount the partition:
+
+sudo umount /mnt/mydisk
+Verify:
+
+df -h
+Expected Outcome: The partition should no longer appear.
+Task 3: Configuring Persistent Mounts (/etc/fstab)
+Subtask 3.1: Add an Entry to /etc/fstab
+Get the UUID of your partition:
+
+sudo blkid /dev/sdX1
+Edit /etc/fstab:
+
+sudo nano /etc/fstab
+Add this line (replace UUID and options`):
+
+UUID=your-uuid-here /mnt/mydisk ext4 defaults 0 2
+Test the configuration:
+
+sudo mount -a
+Expected Outcome: No errors. Verify with df -h.
+Task 4: Managing LVM Volumes
+Subtask 4.1: Create an LVM Volume
+Initialize a physical volume (replace /dev/sdX):
+
+sudo pvcreate /dev/sdX
+Create a volume group:
+
+sudo vgcreate myvg /dev/sdX
+Create a logical volume:
+
+sudo lvcreate -L 5G -n mylv myvg
+Format and mount:
+
+sudo mkfs.ext4 /dev/myvg/mylv
+sudo mkdir /mnt/lvm
+sudo mount /dev/myvg/mylv /mnt/lvm
+Subtask 4.2: Extend an LVM Volume
+Extend the logical volume:
+
+sudo lvextend -L +2G /dev/myvg/mylv
+Resize the filesystem:
+
+sudo resize2fs /dev/myvg/mylv
+Verify:
+
+df -h /mnt/lvm
+Expected Outcome: The size should increase by 2GB.
+Troubleshooting Tips
+If mount fails, check dmesg for errors.
+For LVM issues, use vgdisplay and lvdisplay to verify states.
+Always back up /etc/fstab before editing.
