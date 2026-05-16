@@ -1,0 +1,106 @@
+Task 1: Monitor CPU Usage
+Objective: Check CPU utilization and identify high-usage processes.
+
+Subtask 1.1: Check Overall CPU Usage
+Run the following to see real-time CPU statistics:
+
+top
+Press q to exit.
+Observe the %CPU column to identify high-usage processes.
+Subtask 1.2: Get a Snapshot of CPU Usage
+Use mpstat (from the sysstat package) for a summary:
+
+sudo dnf install sysstat -y  # Install if not present  
+mpstat -P ALL 1 5  # Monitor all cores, 1-second intervals, 5 reports  
+Expected Output:
+
+Displays CPU usage per core.
+Troubleshooting Tip:
+
+If mpstat is not found, ensure sysstat is installed.
+Task 2: Monitor Memory Usage
+Objective: Check RAM and swap usage.
+
+Subtask 2.1: Check Free Memory
+Use free to see memory and swap usage:
+
+free -h
+Expected Output:
+
+Displays total, used, and available memory in human-readable format.
+Subtask 2.2: Identify Memory-Hungry Processes
+Use top sorted by memory:
+
+top -o %MEM
+Press q to exit.
+Task 3: Monitor Disk Usage
+Objective: Check disk space and I/O activity.
+
+Subtask 3.1: Check Disk Space
+Use df for filesystem usage:
+
+df -h
+Expected Output:
+
+Shows disk space per mounted filesystem.
+Subtask 3.2: Check Directory-Level Disk Usage
+Use du to analyze directory sizes:
+
+du -sh /var/log/*  # Check log directory sizes  
+Expected Output:
+
+Displays sizes of directories under /var/log/.
+Subtask 3.3: Monitor Disk I/O (if iotop is installed)
+Install and run iotop to see disk I/O per process:
+
+sudo dnf install iotop -y  
+sudo iotop -o  # Show only active I/O processes  
+Troubleshooting Tip:
+
+Requires root privileges.
+Task 4: Monitor Network Usage
+Objective: Check network bandwidth usage.
+
+Subtask 4.1: Check Active Connections
+Use ss (modern replacement for netstat):
+
+ss -tulnp  
+Expected Output:
+
+Lists active TCP/UDP connections and listening ports.
+Subtask 4.2: Monitor Real-Time Network Traffic
+Use nload (install if missing):
+
+sudo dnf install nload -y  
+nload  
+Press q to exit.
+Task 5: Analyze Running Processes Impact
+Objective: Identify processes consuming excessive resources.
+
+Subtask 5.1: Use ps to Filter High-Resource Processes
+ps aux --sort=-%cpu | head -n 5  # Top 5 CPU-consuming processes  
+ps aux --sort=-%mem | head -n 5  # Top 5 memory-consuming processes  
+Expected Output:
+
+Lists processes sorted by CPU or memory usage.
+Subtask 5.2: Check Container Resource Usage (Podman)
+If using Podman, monitor container stats:
+
+podman stats  
+Expected Output:
+
+Shows CPU, memory, and network usage per container.
+Task 6: Detect Resource Exhaustion
+Objective: Identify system bottlenecks.
+
+Subtask 6.1: Check System Logs
+journalctl -p err -b  # View error logs since last boot  
+Expected Output:
+
+Displays critical system errors.
+Subtask 6.2: Simulate High Load (Optional)
+Run a stress test (install stress-ng if needed):
+
+sudo dnf install stress-ng -y  
+stress-ng --cpu 4 --vm 2 --timeout 30s  
+Monitor using top or htop in another terminal.
