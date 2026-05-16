@@ -1,0 +1,85 @@
+Lab Setup
+Launch a terminal session
+Verify NetworkManager is running:
+sudo systemctl status NetworkManager
+If not running, start it with:
+sudo systemctl start NetworkManager
+Task 1: Listing Network Devices with nmcli
+Subtask 1.1: List all network devices
+nmcli device status
+Expected Output:
+A table showing devices (eth0, wlan0, etc.), their type, state, and connection.
+
+Subtask 1.2: Show detailed device information
+nmcli device show
+Key Concept:
+This shows IP addresses, routes, DNS, and hardware details for all interfaces.
+
+Task 2: Configuring Static IP Address
+Subtask 2.1: Identify current connection name
+nmcli connection show
+Troubleshooting:
+If no connections appear, check if interfaces are up with ip link.
+
+Subtask 2.2: Add static IP configuration
+sudo nmcli connection modify "Wired connection 1" \
+ipv4.addresses 192.168.1.100/24 \
+ipv4.gateway 192.168.1.1 \
+ipv4.dns "8.8.8.8,8.8.4.4" \
+ipv4.method manual
+Explanation:
+
+Sets static IP 192.168.1.100 with /24 subnet
+Configures gateway and Google DNS servers
+Changes method from DHCP to manual
+Subtask 2.3: Apply changes
+sudo nmcli connection up "Wired connection 1"
+Task 3: Modifying Connection Profile
+Subtask 3.1: View current profile settings
+nmcli connection show "Wired connection 1"
+Subtask 3.2: Change MTU size
+sudo nmcli connection modify "Wired connection 1" 802-3-ethernet.mtu 1500
+Subtask 3.3: Disable IPv6
+sudo nmcli connection modify "Wired connection 1" ipv6.method disabled
+Task 4: Restarting NetworkManager
+Subtask 4.1: Restart service
+sudo systemctl restart NetworkManager
+Subtask 4.2: Verify status
+systemctl status NetworkManager
+Expected Outcome:
+Active (running) status with no errors
+
+Task 5: Hostname and DNS Configuration
+Subtask 5.1: Set hostname
+sudo hostnamectl set-hostname mylabhost
+Verify with:
+
+hostnamectl
+Subtask 5.2: Configure DNS resolution
+Edit resolv.conf (temporary):
+
+sudo nmcli connection modify "Wired connection 1" ipv4.dns "1.1.1.1 1.0.0.1"
+For permanent changes:
+
+sudo nmcli connection modify "Wired connection 1" ipv4.ignore-auto-dns yes
+Verification Steps
+Check IP configuration:
+
+ip addr show
+Test network connectivity:
+
+ping -c 4 8.8.8.8
+Verify DNS resolution:
+
+nslookup google.com
+Troubleshooting Tips
+If changes don't apply:
+
+Restart the interface: sudo nmcli device disconnect eth0 && sudo nmcli device connect eth0
+For DNS issues:
+
+Check /etc/resolv.conf contents
+Test with dig example.com
+Connection not appearing?
+
+Rescan devices: sudo nmcli device reapply eth0
