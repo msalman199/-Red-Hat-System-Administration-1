@@ -1,0 +1,70 @@
+Task 1: Creating Files and Directories
+Subtask 1.1: Create a Directory
+Open a terminal.
+Use mkdir to create a new directory named lab3_files:
+mkdir lab3_files
+Verify the directory was created:
+ls
+Expected Output: lab3_files should appear in the list.
+Subtask 1.2: Create a File
+Navigate into the lab3_files directory:
+cd lab3_files
+Use touch to create an empty file named notes.txt:
+touch notes.txt
+Verify the file was created:
+ls
+Expected Output: notes.txt should appear in the list.
+Task 2: Copying and Moving Files
+Subtask 2.1: Copy a File
+Create a copy of notes.txt named notes_backup.txt:
+cp notes.txt notes_backup.txt
+Verify the copy was created:
+ls
+Expected Output: Both notes.txt and notes_backup.txt should appear.
+Subtask 2.2: Move a File
+Create a new directory named backup:
+mkdir backup
+Move notes_backup.txt into the backup directory:
+mv notes_backup.txt backup/
+Verify the file was moved:
+ls backup/
+Expected Output: notes_backup.txt should appear inside the backup directory.
+Task 3: Exploring File Metadata
+Subtask 3.1: List Files with Detailed Information
+Use ls -l to view detailed file metadata:
+ls -l
+Expected Output: Displays permissions, owner, size, and modification time for files.
+Subtask 3.2: Use stat for Advanced Metadata
+Run stat on notes.txt:
+stat notes.txt
+Expected Output: Displays inode, access/modify times, and file size in bytes.
+Task 4: Redirecting Output
+Subtask 4.1: Redirect Output to a File
+Redirect the output of ls -l to a file named file_list.txt`:
+ls -l > file_list.txt
+View the contents of file_list.txt:
+cat file_list.txt
+Expected Output: The file should contain the same output as ls -l.
+Subtask 4.2: Append Output to a File
+Append the output of stat notes.txt to file_list.txt:
+stat notes.txt >> file_list.txt
+Verify the appended content:
+cat file_list.txt
+Expected Output: The file should now include both ls -l and stat outputs.
+Task 5: Deleting Files and Directories
+Subtask 5.1: Delete a File
+Remove notes.txt:
+rm notes.txt
+Verify deletion:
+ls
+Expected Output: notes.txt should no longer appear.
+Subtask 5.2: Delete a Directory
+Remove the backup directory and its contents:
+rm -r backup
+Verify deletion:
+ls
+Expected Output: backup should no longer appear.
+Troubleshooting Tips
+Permission Denied: Use sudo if you encounter permission issues (e.g., sudo rm -r backup).
+File Not Found: Double-check file/directory names and paths.
+Accidental Deletion: Be cautious with rm -r—it permanently deletes files.
