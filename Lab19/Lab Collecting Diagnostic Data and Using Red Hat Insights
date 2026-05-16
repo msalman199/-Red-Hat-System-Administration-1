@@ -1,0 +1,57 @@
+Task 1: Install and Run sosreport
+Subtask 1.1: Install sosreport
+sudo dnf install sos -y
+Expected Outcome:
+Package sos is installed with no errors.
+
+Troubleshooting:
+If encountering dependency issues:
+
+sudo dnf clean all
+sudo dnf makecache
+Subtask 1.2: Generate Diagnostic Report
+sudo sosreport --batch --name=$(hostname)
+Key Concepts:
+
+--batch: Runs non-interactively
+--name: Tags the report with the hostname
+Expected Outcome:
+A .tar.xz file is created in /var/tmp/ with system diagnostics.
+
+Note:
+The exact filename will be shown in the command output.
+
+Task 2: Install and Register insights-client
+Subtask 2.1: Install the Client
+sudo dnf install insights-client -y
+Subtask 2.2: Register the System
+sudo insights-client --register
+Expected Outcome:
+"Successfully registered host to Red Hat Insights" message.
+
+Troubleshooting:
+If registration fails:
+
+Verify subscription status:
+sudo subscription-manager status
+Check network access to cloud.redhat.com
+Subtask 2.3: Perform First Upload
+sudo insights-client
+Key Concepts:
+This uploads system data to the Insights portal for analysis.
+
+Task 3: Analyze Reports via Red Hat Insights Portal
+Subtask 3.1: Access the Portal
+Navigate to: https://cloud.redhat.com/insights
+Log in with your Red Hat account
+Subtask 3.2: Review System Insights
+Locate your system under "Systems" tab
+Examine:
+Advisories: Recommended updates
+Subscriptions: Compliance status
+Performance: Resource utilization trends
+Key Features:
+
+Risk identification
+Proactive issue detection
+Remediation guidance
