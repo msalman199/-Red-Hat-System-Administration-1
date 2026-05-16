@@ -1,0 +1,69 @@
+Lab Setup
+Open a terminal
+Verify you have sudo privileges:
+sudo -v
+Install necessary tools (if not present):
+sudo dnf install -y shadow-utils # For RHEL/Fedora
+Task 1: User Management
+1.1 Creating Users
+# Create a new user
+sudo useradd -m -s /bin/bash labuser1
+
+# Set password for the user
+sudo passwd labuser1
+Expected Output:
+User 'labuser1' created with home directory and bash shell.
+
+Troubleshooting:
+If useradd fails, check if the username already exists with id labuser1.
+
+1.2 Modifying Users
+# Change user's login shell
+sudo usermod -s /bin/zsh labuser1
+
+# Add comment to user account
+sudo usermod -c "Lab User 1" labuser1
+Verify changes:
+
+grep labuser1 /etc/passwd
+Task 2: Group Management
+2.1 Creating Groups
+# Create a new group
+sudo groupadd labgroup
+
+# Add user to group
+sudo usermod -aG labgroup labuser1
+Verify:
+
+groups labuser1
+2.2 Group Administrators
+# Set group administrator
+sudo gpasswd -A labuser1 labgroup
+
+# Add another user to group
+sudo gpasswd -a labuser2 labgroup
+Task 3: Password Policies
+3.1 Password Aging with chage
+# Set password expiration
+sudo chage -M 90 -m 7 -W 14 labuser1
+
+# View password aging
+sudo chage -l labuser1
+Key Parameters:
+
+-M: Max days
+-m: Min days
+-W: Warning days
+Task 4: Cleanup
+4.1 Removing Users
+# Remove user (keep home directory)
+sudo userdel labuser1
+
+# Remove user with home directory
+sudo userdel -r labuser2
+4.2 Removing Groups
+sudo groupdel labgroup
+Verification Steps
+Check all users:
+cut -d: -f1 /etc/passwd
+Verify no remaining lab users/groups exist.
