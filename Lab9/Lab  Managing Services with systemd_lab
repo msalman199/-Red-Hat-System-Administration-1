@@ -1,0 +1,111 @@
+Lab Tasks
+Task 1: Check Service Status
+Objective: Learn how to check the status of a service using systemctl.
+
+Step 1: List All Running Services
+Run the following to list all active services:
+
+systemctl list-units --type=service --state=running
+Expected Output:
+A table showing all running services, their load state, active state, and description.
+
+Step 2: Check Status of a Specific Service
+Check the status of the sshd (SSH) service:
+
+systemctl status sshd
+Expected Output:
+Detailed status including whether the service is active, enabled, and recent log entries.
+
+Troubleshooting Tip:
+If sshd is not installed, install it with:
+
+sudo dnf install openssh-server  # For RHEL/Fedora/CentOS
+sudo apt install openssh-server  # For Ubuntu/Debian
+Task 2: Start, Stop, and Restart Services
+Objective: Control services by starting, stopping, and restarting them.
+
+Step 1: Stop a Service
+Stop the sshd service:
+
+sudo systemctl stop sshd
+Verify it is stopped:
+
+systemctl status sshd
+Expected Output:
+Active: inactive (dead)
+
+Step 2: Start a Service
+Start the sshd service again:
+
+sudo systemctl start sshd
+Verify it is running:
+
+systemctl status sshd
+Expected Output:
+Active: active (running)
+
+Step 3: Restart a Service
+Restart the sshd service:
+
+sudo systemctl restart sshd
+Expected Output:
+The service should briefly stop and then start again.
+
+Task 3: Enable and Disable Services at Boot
+Objective: Configure services to start automatically at boot.
+
+Step 1: Enable a Service
+Enable sshd to start on boot:
+
+sudo systemctl enable sshd
+Expected Output:
+Created symlink /etc/systemd/system/multi-user.target.wants/sshd.service → /usr/lib/systemd/system/sshd.service
+
+Step 2: Disable a Service
+Disable sshd from starting on boot:
+
+sudo systemctl disable sshd
+Expected Output:
+Removed /etc/systemd/system/multi-user.target.wants/sshd.service
+
+Task 4: Inspect Unit Files
+Objective: Examine service configuration files.
+
+Step 1: View the Unit File
+Display the sshd unit file:
+
+systemctl cat sshd
+Expected Output:
+The contents of the sshd.service file.
+
+Step 2: Check Dependencies
+List dependencies of the sshd service:
+
+systemctl list-dependencies sshd
+Expected Output:
+A tree of services that sshd depends on.
+
+Task 5: View Logs with journalctl
+Objective: Use journalctl to inspect service logs.
+
+Step 1: View All Logs for a Service
+Check logs for sshd:
+
+sudo journalctl -u sshd
+Expected Output:
+A log of all sshd-related entries.
+
+Step 2: Filter Logs by Time
+View logs from the last hour:
+
+sudo journalctl -u sshd --since "1 hour ago"
+Expected Output:
+Only recent sshd logs.
+
+Step 3: Follow Logs in Real-Time
+Monitor logs live:
+
+sudo journalctl -u sshd -f
+Expected Output:
+New log entries appear as they are generated (press Ctrl+C to exit).
+
