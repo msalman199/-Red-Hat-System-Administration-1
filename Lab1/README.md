@@ -1,4 +1,4 @@
-# Introduction to Red Hat Enterprise Linux (RHEL) Lab
+# Introduction to Red Hat Enterprise Linux (RHEL) 
 
 This repository contains a hands-on lab designed to introduce the fundamentals of open-source software, Linux distributions, and the core characteristics and subscription models of Red Hat Enterprise Linux (RHEL).
 
