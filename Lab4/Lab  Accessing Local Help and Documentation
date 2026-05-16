@@ -1,0 +1,86 @@
+Task 1: Using Manual Pages (man)
+Objective: Learn to access and navigate command documentation using man.
+
+Open a terminal and type:
+
+man ls
+This displays the manual page for the ls command.
+Navigate the man page:
+
+Use Space to scroll down
+Use b to scroll up
+Use / to search (e.g., /color to find color options)
+Press q to quit
+Search for specific sections:
+
+man 5 passwd
+This shows the manual page for the /etc/passwd file format (section 5).
+Expected Outcome: You can view and search through complete command documentation.
+
+Troubleshooting Tip: If man isn't installed, run sudo dnf install man-db.
+
+Task 2: Using Info Pages (info)
+Objective: Access GNU-style documentation with info.
+
+View info documentation:
+
+info coreutils
+This displays info pages for GNU core utilities.
+Navigate using:
+
+Enter to follow links
+n (next), p (previous)
+u (up one level)
+q to quit
+Expected Outcome: You can navigate hierarchical documentation for GNU utilities.
+
+Task 3: Using --help Flag
+Objective: Quickly access command syntax and options.
+
+Try with common commands:
+
+ls --help
+podman --help
+For detailed help:
+
+podman run --help
+Expected Outcome: Immediate access to command options without full manual pages.
+
+Task 4: Exploring /usr/share/doc
+Objective: Examine system-installed documentation.
+
+List available documentation:
+
+ls /usr/share/doc
+View specific package documentation:
+
+less /usr/share/doc/bash/README
+Expected Outcome: Access to supplementary documentation files.
+
+Task 5: Using whatis and apropos
+Objective: Discover command purposes and find relevant commands.
+
+Get brief command descriptions:
+
+whatis ls
+whatis podman
+Find commands related to a topic:
+
+apropos "list directory"
+apropos container
+Expected Outcome: Quickly identify command purposes and find tools by functionality.
+
+Task 6: Examining Package Information
+Objective: View package details using dnf/yum.
+
+Check if Podman is installed:
+
+dnf list installed podman
+View package information:
+
+dnf info podman
+View changelog:
+
+dnf changelog podman
+Expected Outcome: Access to comprehensive package metadata and documentation.
+
